@@ -1,0 +1,53 @@
+Step-by-Step Guide
+Navigate to Swagger UI:
+
+Open your browser and go to the Logusus Swagger UI (usually something like http://<target-ip>/swagger).
+Swagger UI is a tool that provides a visual interface for interacting with the API.
+Explore HTTP Requests:
+
+In the Swagger UI, you will see a list of available HTTP requests (endpoints) that you can interact with.
+Look through the GET API requests to find one that can give you user credentials.
+Run Burp Suite:
+
+Open Burp Suite on your machine.
+In Burp Suite, go to the "Proxy" tab and ensure the intercept is on.
+Run the Browser with Burp Suite:
+
+Configure your browser to use Burp Suite as a proxy (usually by setting the proxy settings to 127.0.0.1:8080).
+Open the browser and navigate to the Logusus login page.
+Log In:
+
+Log in to the application using your credentials.
+Burp Suite will capture all the HTTP requests your browser sends.
+Create a File to Upload:
+
+Create a simple text file on your machine. You can name it avatar.txt and put some dummy text in it.
+Find the PATCH /change-avatar API:
+
+In Swagger UI, look for the PATCH endpoint that allows you to upload an avatar.
+This endpoint is vulnerable to Local File Inclusion (LFI).
+Prepare to Upload Your File:
+
+In Swagger UI, find the token required for authentication (usually displayed in the top right corner next to the logout button).
+Copy this token.
+Upload Your File via the PATCH API:
+
+In the PATCH /change-avatar API, paste your token into the required field.
+Select your avatar.txt file to upload.
+Send the Request:
+
+Execute the API request to upload the file.
+Burp Suite will capture this request.
+Manipulate the Request in Burp Suite:
+
+In Burp Suite, go to the "Proxy" tab and find the request that contains your file upload (it should be the last one).
+Right-click on this request and send it to the "Repeater" tab.
+Modify the Request:
+
+In the Repeater tab, find the part of the request where your file is being uploaded.
+Change the file path to /root/proof.txt (this is where the flag is located).
+Send the Modified Request:
+
+
+
+The flag might be encoded, so you may need to decode it using a tool like CyberChef or any other decoding tool.
