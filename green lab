@@ -1,0 +1,39 @@
+Sec-Dojo Green lab
+Machine1_ip : 10.8.0.2 --> Login
+Machine2_ip : 10.8.0.3 --> Upload
+
+
+----First Lab --Login---
+To start this lab we start with Nmap command to identity open ports
+	--> nmap -A 10.8.0.2
+	--> open ports
+		-22 for ssh
+		-80 for http 
+At this stage we know that we have a wb server ready for exploitation.
+We access to the web server on port 80 but nothing concluant.
+The first step is to do is file or directory discovry with the tool gobuster
+	--> gobuster dir -u http://10.8.0.2/ -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -t 100 
+	After that we found some hidden directories
+	-images
+	-Javacript
+	-phpMyAdmin
+	-Views
+Here the directory which must contains information is phpmyasmin so we'll go on it 10.8.0.2/phpMyAdmin. Once there we'll try some common default usernames and password. Directly we start with admin:admin and it works. 
+Whwn we access to the admin table we found 2 credentials in clear text
+	-ubuntu:abcit2020
+	-green:xR297gSTr
+If we use green credentials to connect to ssh It works. We are able to read to proof.txt file because green has all rights.
+
+
+
+----Second challenge
+First method --> connect to machine using green credentials and search the way to do priviliege escalation.
+
+
+Second method --> Access to the web page on port 80 and upload a reverse shell file. After that you will have to open a listner on your system using command 
+	--> nc -lnvp 1234
+After that you will run your reverse shell for exple name revshell.php using the command:
+	--> curl 10.8.0.3/uploads/revshell.php
+After running this command the target machine will connect to your machine by listner you open and in the window of listner you will use the command:
+	--> python3 -c 'import pty;pty.spawn("/bin/bash")'
+to turn the shell into an interactive one. After that you'll found a way to do your privilege escalation.
